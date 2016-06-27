@@ -3,12 +3,16 @@ package in.sadrudd.motivationalquotes.ui;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import in.sadrudd.motivationalquotes.R;
+import in.sadrudd.motivationalquotes.api.QuotesAPIHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +32,8 @@ public class QuotesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    // Initialise quotesAPIHandler
+    private QuotesAPIHandler quotesAPIHandler;
     private OnFragmentInteractionListener mListener;
 
     public QuotesFragment() {
@@ -55,6 +61,8 @@ public class QuotesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialise quotesAPIHandler
+        quotesAPIHandler = new QuotesAPIHandler();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -65,7 +73,16 @@ public class QuotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_quotes, container, false);
+        View view = inflater.inflate(R.layout.fragment_quotes, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        quotesAPIHandler.getFamousQuote();
+        super.onViewCreated(view, savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +109,16 @@ public class QuotesFragment extends Fragment {
         mListener = null;
     }
 
+    @OnClick(R.id.btnMovieQuote)
+    public void getMovieQuote(){
+        System.out.println("You pressed a movie quote button!!");
+    }
+
+    @OnClick(R.id.btnFamousQuote)
+    public void getFamousQuote(){
+        System.out.println("You pressed a famous quote button!!");
+
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
